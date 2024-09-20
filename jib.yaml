@@ -1,0 +1,41 @@
+apiVersion: jib/v1alpha1
+kind: BuildFile
+
+from:
+  image: "node:20-alpine"  # 웹 서버를 제공하는 base image로 nginx나 serve도 가능
+  platforms:
+    - architecture: "arm64"
+      os: "linux"
+
+creationTime: 2000
+
+format: OCI
+
+workingDirectory: "/app"
+
+environment:
+  NODE_ENV: "production"
+  PROT: 3000
+  HOSTNAME: 0.0.0.0
+
+exposedPorts:
+  - "3000"
+
+# 빌드된 결과물만 이미지에 포함
+layers: 
+  properties:
+    filePermissions: "644"
+    directoryPermissions: "755"
+  entries:
+    - name: "dependencies"
+      files:
+        - src: ".next/standalone"  # 패키지 파일 복사
+          dest: "/app"
+        - src: ".next/static"
+          dest: "/app/.next/static"
+        
+entrypoint:
+  - "node"
+# default command (CMD) to start the app
+cmd:
+  - "server.js"
