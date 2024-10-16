@@ -30,7 +30,7 @@ jobs:
 
       - name: Build & Push to ECR
         run: |
-          /usr/local/bin/jib build -b jib.yaml --target=${{ steps.setup_jib.outputs.repository-uri }}
+          /usr/local/bin/jib build -b jib.yaml --target=${{ steps.setup_jib.outputs.repository-uri }}/sample-cicd-pub
 
 # name: CD Pipeline
 
