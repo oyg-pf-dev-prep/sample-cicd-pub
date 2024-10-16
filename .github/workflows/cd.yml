@@ -14,10 +14,6 @@ on:
       repository-uri:
         description: 'ECR repository URI (e.g. 123456789012.dkr.ecr.us-west-2.amazonaws.com/my-repo)'
         required: true
-      jib-config-file:
-        description: 'Path to the Jib configuration file (default: jib.yaml)'
-        required: false
-        default: 'jib.yaml'
       aws-region:
         description: 'AWS region to use'
         required: false
@@ -33,13 +29,17 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branch }}
 
-      - name: Setup jib
-        uses: oyg-pf-dev-prep/github-actions/.github/workflows/setup-jib-v1@main
-
       - name: Ecr login
         uses: oyg-pf-dev-prep/github-actions/.github/workflows/ecr-login-v1@main
         with:
           repository-uri: '484907487980.dkr.ecr.ap-northeast-2.amazonaws.com/sample-cicd-pub'
+
+      - name: Setup jib
+        uses: oyg-pf-dev-prep/github-actions/.github/workflows/setup-jib-v1@main
+
+      - name: Build & Push to ECR
+        run: |
+          jib build -b jib.yaml --target=484907487980.dkr.ecr.ap-northeast-2.amazonaws.com/sample-cicd-pub
 
       # - name: Build Docker image using Jib
       #   run: |
