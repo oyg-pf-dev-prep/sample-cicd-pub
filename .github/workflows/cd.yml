@@ -20,6 +20,15 @@ on:
         default: 'ap-northeast-2'
 
 jobs:
+  input_check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo inputs
+        run: |
+          echo ${{ inputs.branch }}
+          echo ${{ inputs.repository-uri }}
+          echo ${{ inputs.aws-region }}
+
   checkout:
     runs-on: ubuntu-latest
     steps:
@@ -43,4 +52,4 @@ jobs:
     steps:
       - name: Build & Push to ECR
         run: |
-          jib build -b jib.yaml --to=${{ inputs.repository-uri }}
+          jib build -b jib.yaml --target=${{ inputs.repository-uri }}
