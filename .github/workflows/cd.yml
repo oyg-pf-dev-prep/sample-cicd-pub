@@ -24,8 +24,8 @@ jobs:
       - name: ECR Login
         uses: oyg-pf-dev-prep/github-action/ecr-login@ecr-login/v0.0.1
         with:
-          repository-uri: vars.PROD_ECR_URI
-          role-name: vars.PROD_GITHUB_ROLE_ARN
+          repository-uri: ${{ vars.PROD_ECR_URI }}
+          role-name: ${{ vars.PROD_GITHUB_ROLE_ARN }}
           
       - name: Setup Jib
         id: setup_jib
@@ -33,7 +33,7 @@ jobs:
 
       - name: Build & Push to ECR
         run: |
-          /usr/local/bin/jib build -b jib.yaml --target=${{ steps.setup_jib.outputs.repository-uri }}/sample-cicd-pub
+          /usr/local/bin/jib build -b jib.yaml --target=${{ vars.PROD_ECR_URI }}/sample-cicd-pub
 
 # name: CD Pipeline
 
