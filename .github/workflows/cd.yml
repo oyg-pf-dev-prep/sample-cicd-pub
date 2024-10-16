@@ -45,7 +45,7 @@ jobs:
 
       - name: Build & Push to ECR
         run: |
-          jib build -b jib.yaml --target=${{ vars.PROD_ECR_URI }}/sample-cicd-pub
+          jib build -b jib.yaml --target=${{ vars.PROD_ECR_URI }}/sample-cicd-pub --tags=${GITHUB_SHA::8}
 
 # name: CD Pipeline
 
