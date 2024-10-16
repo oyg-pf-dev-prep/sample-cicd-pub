@@ -29,13 +29,13 @@ jobs:
           ref: ${{ inputs.branch }}
 
   ecr_login:
-    uses: oyg-pf-dev-prep/github-actions/.github/workflows/ecr-login-v1@main
+    uses: oyg-pf-dev-prep/github-actions/.github/workflows/ecr-login-v1.yaml@main
     with:
       repository-uri: ${{ inputs.repository-uri }}
       region: ${{ inputs.aws-region }}
 
   setup_jib:
-    uses: oyg-pf-dev-prep/github-actions/.github/workflows/setup-jib-v1@main
+    uses: oyg-pf-dev-prep/github-actions/.github/workflows/setup-jib-v1.yaml@main
 
   build_and_push_image:
     runs-on: ubuntu-latest
