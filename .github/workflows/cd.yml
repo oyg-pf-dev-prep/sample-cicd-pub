@@ -14,10 +14,6 @@ on:
       repository-uri:
         description: 'ECR repository URI (e.g. 123456789012.dkr.ecr.us-west-2.amazonaws.com/my-repo)'
         required: true
-      aws-region:
-        description: 'AWS region to use'
-        required: false
-        default: 'ap-northeast-2'
 
 jobs:
   input_check:
@@ -27,7 +23,6 @@ jobs:
         run: |
           echo ${{ inputs.branch }}
           echo ${{ inputs.repository-uri }}
-          echo ${{ inputs.aws-region }}
 
   checkout:
     runs-on: ubuntu-latest
@@ -41,7 +36,6 @@ jobs:
     uses: oyg-pf-dev-prep/github-action/.github/workflows/ecr-login-v1.yaml@main
     with:
       repository-uri: ${{ inputs.repository-uri }}
-      region: ${{ inputs.aws-region }}
 
   setup_jib:
     uses: oyg-pf-dev-prep/github-action/.github/workflows/setup-jib-v1.yaml@main
