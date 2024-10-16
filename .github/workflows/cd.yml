@@ -43,4 +43,4 @@ jobs:
     steps:
       - name: Build & Push to ECR
         run: |
-          jib build -b jib.yaml --target=${{ needs.ecr_login.outputs.repository-uri }}
+          /usr/local/bin/jib build -b jib.yaml --target=${{ needs.ecr_login.outputs.repository-uri }}
