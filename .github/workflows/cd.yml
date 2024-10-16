@@ -24,6 +24,11 @@ jobs:
         with:
           ref: ${{ inputs.branch }}
 
+      - name: Build
+        run: |
+          yarn install
+          yarn build
+
       - name: ECR Login
         uses: oyg-pf-dev-prep/github-action/ecr-login@ecr-login/v0.0.1
         with:
