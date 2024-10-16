@@ -22,11 +22,11 @@ jobs:
           ref: ${{ inputs.branch }}
 
       - name: ECR Login
-        uses: oyg-pf-dev-prep/github-action/ecr-login@ecr-login/v0.0.1
+        uses: oyg-pf-dev-prep/github-action/ecr-login@v0.0.1
           
       - name: Setup Jib
         id: setup_jib
-        uses: oyg-pf-dev-prep/github-action/setup-jib@setup-jib/v0.0.1
+        uses: oyg-pf-dev-prep/github-action/setup-jib@v0.0.1
 
       - name: Build & Push to ECR
         run: |
