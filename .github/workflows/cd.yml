@@ -11,9 +11,6 @@ on:
         description: 'Branch to deploy (default: main)'
         required: false
         default: 'main'
-      repository-uri:
-        description: 'ECR repository URI (e.g. 123456789012.dkr.ecr.us-west-2.amazonaws.com/my-repo)'
-        required: true
 
 jobs:
   input_check:
@@ -22,7 +19,6 @@ jobs:
       - name: echo inputs
         run: |
           echo ${{ inputs.branch }}
-          echo ${{ inputs.repository-uri }}
 
   checkout:
     runs-on: ubuntu-latest
@@ -33,13 +29,16 @@ jobs:
           ref: ${{ inputs.branch }}
 
   ecr_login:
+    runs-on: ubuntu-latest
     permissions:
       id-token: write  # OIDC 토큰을 요청할 수 있도록 권한을 설정
       contents: read   # actions/checkout을 위한 권한
-      
-    uses: oyg-pf-dev-prep/github-action/.github/workflows/ecr-login-v1.yaml@main
-    with:
-      repository-uri: ${{ inputs.repository-uri }}
+    steps:
+      - name: Login to ECR
+        id: ecr_login
+        uses: oyg-pf-dev-prep/github-action/.github/workflows/ecr-login-v1.yaml@main
+    outputs:
+      repository-uri: ${{ steps.ecr_login.outputs.repository-uri }}
 
   setup_jib:
     uses: oyg-pf-dev-prep/github-action/.github/workflows/setup-jib-v1.yaml@main
@@ -50,4 +49,4 @@ jobs:
     steps:
       - name: Build & Push to ECR
         run: |
-          jib build -b jib.yaml --target=${{ inputs.repository-uri }}
+          jib build -b jib.yaml --target=${{ needs.ecr_login.outputs.repository-uri }}
