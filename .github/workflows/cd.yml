@@ -27,37 +27,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.branch }}
+          ref: ${{ inputs.branch }}
 
       - name: Ecr login
         uses: oyg-pf-dev-prep/github-actions/.github/workflows/ecr-login-v1@main
         with:
-          repository-uri: '484907487980.dkr.ecr.ap-northeast-2.amazonaws.com/sample-cicd-pub'
+          repository-uri: ${{ inputs.repository-uri }}
+          region: ${{ inputs.aws-region }}
 
       - name: Setup jib
         uses: oyg-pf-dev-prep/github-actions/.github/workflows/setup-jib-v1@main
 
       - name: Build & Push to ECR
         run: |
-          jib build -b jib.yaml --target=484907487980.dkr.ecr.ap-northeast-2.amazonaws.com/sample-cicd-pub
-
-      # - name: Build Docker image using Jib
-      #   run: |
-      #     ./gradlew jib --build-file ${{ github.event.inputs.jib_config_file }} --image=${{ github.event.inputs.ecr_repository_uri }}:${{ github.sha }}
-
-      # - name: Configure AWS credentials
-      #   uses: aws-actions/configure-aws-credentials@v2
-      #   with:
-      #     role-to-assume: arn:aws:iam::484907487980:role/GithubRole
-      #     aws-region: ap-northeast-2
-
-      # - name: Login to Amazon ECR
-      #   id: ecr-login
-      #   run: |
-      #     aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ github.event.inputs.ecr_repository_uri }}
-
-      # - name: Push Container image to ECR
-      #   run: |
-      #     aws ecr describe-repositories --repository-names "${{ github.event.inputs.ecr_repository_uri }}" || \
-      #     aws ecr create-repository --repository-name "${{ github.event.inputs.ecr_repository_uri }}"
-      #     docker push ${{ github.event.inputs.ecr_repository_uri }}:${{ github.sha }}
+          jib build -b jib.yaml --to=${{ inputs.repository-uri }}
