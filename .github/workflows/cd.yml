@@ -29,16 +29,10 @@ jobs:
           ref: ${{ inputs.branch }}
 
   ecr_login:
-    runs-on: ubuntu-latest
     permissions:
       id-token: write  # OIDC 토큰을 요청할 수 있도록 권한을 설정
       contents: read   # actions/checkout을 위한 권한
-    steps:
-      - name: Login to ECR
-        id: ecr_login
-        uses: oyg-pf-dev-prep/github-action/.github/workflows/ecr-login-v1.yaml@main
-    outputs:
-      repository-uri: ${{ steps.ecr_login.outputs.repository-uri }}
+    uses: oyg-pf-dev-prep/github-action/.github/workflows/ecr-login-v1.yaml@main
 
   setup_jib:
     uses: oyg-pf-dev-prep/github-action/.github/workflows/setup-jib-v1.yaml@main
